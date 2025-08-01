@@ -5,7 +5,10 @@ import { useAuth } from '../../hooks/useAuth';
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
   const { data, loading, error, refresh } = useDashboardData();
-  const { games: userGames, loading: gamesLoading } = useUserGames(user?.id || '');
+  
+  // Solo obtener juegos si el usuario existe y es estable
+  const userId = user?.uid;
+  const { games: userGames, loading: gamesLoading } = useUserGames(userId || null);
 
   if (loading) {
     return (

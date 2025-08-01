@@ -25,15 +25,25 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
     try {
       if (isLogin) {
+        console.log('🔐 Attempting login with:', email);
         await signIn(email, password);
+        console.log('✅ Login successful');
       } else {
-        await signUp(email, password, { displayName });
+        console.log('📝 Attempting signup with:', email);
+        await signUp(email, password, displayName);
+        console.log('✅ Signup successful');
       }
-      onClose();
-      setEmail('');
-      setPassword('');
-      setDisplayName('');
+      
+      // Pequeña pausa para asegurar que el estado se actualice
+      setTimeout(() => {
+        onClose();
+        setEmail('');
+        setPassword('');
+        setDisplayName('');
+      }, 100);
+      
     } catch (error: any) {
+      console.error('❌ Auth error:', error);
       setError(error.message || 'Error en la autenticación');
     } finally {
       setLoading(false);
@@ -143,7 +153,12 @@ export function AuthButton() {
   const [showModal, setShowModal] = useState(false);
   const { user, logout, isDeveloper, isClient } = useAuth();
 
+  // Debug logs
+  console.log('🔍 AuthButton render - User:', user);
+  console.log('🔍 AuthButton render - isDeveloper:', isDeveloper, 'isClient:', isClient);
+
   if (user) {
+    console.log('✅ User is logged in, showing user info');
     return (
       <div className="flex items-center space-x-4">
         <div className="hidden md:block">
@@ -169,6 +184,7 @@ export function AuthButton() {
     );
   }
 
+  console.log('❌ No user detected, showing login button');
   return (
     <>
       <button

@@ -36,8 +36,12 @@ const AppRouter: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 to-blue-500">
-        <div className="text-white text-xl font-semibold">Cargando...</div>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-600 to-blue-500">
+        <div className="text-white text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+          <div className="text-xl font-semibold mb-2">Iniciando aplicación...</div>
+          <div className="text-sm opacity-80">Conectando con Firebase</div>
+        </div>
       </div>
     );
   }

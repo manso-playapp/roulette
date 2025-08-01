@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { 
   User as FirebaseUser,
   signInWithEmailAndPassword,
@@ -11,7 +11,7 @@ import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase/config';
 import { logger } from '../utils/logger';
 
-// Tipos simplificados
+// Tipos simplificados compatibles con tu estructura actual
 export interface User {
   uid: string;
   email: string;
@@ -37,21 +37,9 @@ const AuthContext = createContext<AuthContextType | null>(null);
 // Email del desarrollador
 const DEVELOPER_EMAIL = 'grupomanso@gmail.com';
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-
-  // Timeout de seguridad para el loading
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (loading) {
-        console.warn('⚠️ Auth loading timeout reached');
-        setLoading(false);
-      }
-    }, 10000);
-
-    return () => clearTimeout(timeout);
-  }, [loading]);
 
   const getUserData = async (firebaseUser: FirebaseUser): Promise<User | null> => {
     try {
@@ -59,22 +47,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       
       if (userDoc.exists()) {
         const userData = userDoc.data();
-        
-        const user: User = {
+        return {
           uid: firebaseUser.uid,
           email: firebaseUser.email!,
-          displayName: userData.displayName || firebaseUser.displayName || undefined,
-          role: (userData.role || 'client') as 'developer' | 'client',
-          createdAt: userData.createdAt?.toDate?.() || new Date(userData.createdAt) || new Date(),
+          displayName: firebaseUser.displayName || undefined,
+          ...userData,
+          createdAt: userData.createdAt?.toDate() || new Date(),
           lastLogin: new Date(),
-          isActive: userData.isActive !== undefined ? userData.isActive : true,
-        };
-        
-        return user;
-      } else {
-        return null;
+        } as User;
       }
       
+      return null;
     } catch (error) {
       logger.error('Error getting user data:', error);
       return null;
@@ -84,7 +67,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const createUserDocument = async (firebaseUser: FirebaseUser, displayName?: string): Promise<User> => {
     const isDev = firebaseUser.email === DEVELOPER_EMAIL;
     
-    // Asegurar que no enviamos undefined a Firestore
     const userData: any = {
       email: firebaseUser.email!,
       role: (isDev ? 'developer' : 'client') as 'developer' | 'client',
@@ -98,7 +80,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (name) {
       userData.displayName = name;
     }
-    
+
     try {
       await setDoc(doc(db, 'users', firebaseUser.uid), userData);
       
@@ -117,50 +99,60 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       setLoading(true);
       
-      try {
-        if (firebaseUser) {
-          let userData = await getUserData(firebaseUser);
-          
-          if (!userData) {
-            userData = await createUserDocument(firebaseUser);
-          } else {
-            // Actualizar último login
-            await updateDoc(doc(db, 'users', firebaseUser.uid), {
-              lastLogin: new Date(),
-            });
-          }
-          
-          setUser(userData);
+      if (firebaseUser) {
+        let userData = await getUserData(firebaseUser);
+        
+        if (!userData) {
+          userData = await createUserDocument(firebaseUser);
         } else {
-          setUser(null);
+          // Actualizar último login
+          await updateDoc(doc(db, 'users', firebaseUser.uid), {
+            lastLogin: new Date(),
+          });
         }
-      } catch (error) {
-        logger.error('Error in auth state change:', error);
+        
+        setUser(userData);
+      } else {
         setUser(null);
-      } finally {
-        setLoading(false);
       }
+      
+      setLoading(false);
     });
 
     return unsubscribe;
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    await signInWithEmailAndPassword(auth, email, password);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      console.error('Error signing in:', error);
+      throw error;
+    }
   };
 
   const signUp = async (email: string, password: string, displayName?: string) => {
-    const { user: firebaseUser } = await createUserWithEmailAndPassword(auth, email, password);
-    
-    if (displayName) {
-      await updateProfile(firebaseUser, { displayName });
+    try {
+      const { user: firebaseUser } = await createUserWithEmailAndPassword(auth, email, password);
+      
+      if (displayName) {
+        await updateProfile(firebaseUser, { displayName });
+      }
+      
+      await createUserDocument(firebaseUser, displayName);
+    } catch (error) {
+      logger.error('Error signing up:', error);
+      throw error;
     }
-    
-    await createUserDocument(firebaseUser, displayName);
   };
 
   const logout = async () => {
-    await signOut(auth);
+    try {
+      await signOut(auth);
+    } catch (error) {
+      logger.error('Error signing out:', error);
+      throw error;
+    }
   };
 
   const value = {
@@ -173,11 +165,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     isClient: user?.role === 'client',
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { collection, getDocs, query, orderBy, limit, doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { BaseGame, User, Play, Participant } from '../types';
+import { logger } from '../utils/logger';
 
 // Hook para obtener estadísticas del dashboard
 export const useDashboardData = () => {
@@ -26,7 +27,7 @@ export const useDashboardData = () => {
       setError(null);
 
       // 1. Obtener juegos
-      console.log('📊 Obteniendo juegos...');
+      logger.debug('Obteniendo juegos...');
       const gamesSnapshot = await getDocs(collection(db, 'games'));
       const games = gamesSnapshot.docs.map(doc => ({
         id: doc.id,
@@ -34,7 +35,7 @@ export const useDashboardData = () => {
       })) as any[];
 
       // 2. Obtener usuarios
-      console.log('👥 Obteniendo usuarios...');
+      logger.debug('Obteniendo usuarios...');
       const usersSnapshot = await getDocs(collection(db, 'users'));
       const users = usersSnapshot.docs.map(doc => ({
         id: doc.id,
@@ -42,7 +43,7 @@ export const useDashboardData = () => {
       })) as any[];
 
       // 3. Obtener premios
-      console.log('🏆 Obteniendo premios...');
+      logger.debug('Obteniendo premios...');
       const prizesSnapshot = await getDocs(collection(db, 'prizes'));
       const prizes = prizesSnapshot.docs.map(doc => ({
         id: doc.id,
@@ -58,7 +59,7 @@ export const useDashboardData = () => {
           ...doc.data()
         }));
       } catch (error) {
-        console.log('ℹ️  Colección de jugadas aún no existe');
+        logger.info('Colección de jugadas aún no existe');
       }
 
       // 5. Intentar obtener participantes (si existen)
@@ -70,7 +71,7 @@ export const useDashboardData = () => {
           ...doc.data()
         }));
       } catch (error) {
-        console.log('ℹ️  Colección de participantes aún no existe');
+        logger.info('Colección de participantes aún no existe');
       }
 
       // Calcular estadísticas
@@ -119,7 +120,7 @@ export const useDashboardData = () => {
         recentActivity
       };
 
-      console.log('✅ Datos del dashboard obtenidos:', dashboardData);
+      logger.success('Datos del dashboard obtenidos:', dashboardData);
       setData(dashboardData);
 
     } catch (error) {
@@ -176,14 +177,17 @@ export const useGame = (gameId: string) => {
 };
 
 // Hook para obtener lista de juegos del usuario
-export const useUserGames = (userId: string) => {
+export const useUserGames = (userId: string | null) => {
   const [games, setGames] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUserGames = async () => {
-      if (!userId) return;
+      if (!userId) {
+        setLoading(false);
+        return;
+      }
 
       try {
         setLoading(true);
@@ -196,7 +200,7 @@ export const useUserGames = (userId: string) => {
 
         setGames(userGames);
       } catch (error) {
-        console.error('Error obteniendo juegos del usuario:', error);
+        logger.error('Error obteniendo juegos del usuario:', error);
         setError(error instanceof Error ? error.message : 'Error desconocido');
       } finally {
         setLoading(false);
