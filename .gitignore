@@ -1,9 +1,9 @@
 # Dependencies
-node_modules
+node_modules/
 
 # Build outputs
-dist
-dist-ssr
+dist/
+dist-ssr/
 *.local
 
 # Logs
@@ -27,7 +27,7 @@ lerna-debug.log*
 *.sw?
 
 # Firebase
-.firebase
+.firebase/
 firebase-debug.log
 ui-debug.log
 
@@ -37,9 +37,22 @@ ui-debug.log
 .env.production
 .env.staging
 
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
 # Build outputs
 build/
-coverage/
 
-# MacOS
-.DS_Store
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
