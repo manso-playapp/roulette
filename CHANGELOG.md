@@ -1,3 +1,10 @@
+## [2.0.0] - 2025-08-01 🚀 Plataforma profesional completa con sistema de versionado integrado
+
+### Cambios
+- Plataforma profesional completa con sistema de versionado integrado
+
+---
+
 ## [1.1.0] - 2025-08-01 ✨ Implementación completa del sistema de versionado
 
 ### Cambios

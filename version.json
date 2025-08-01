@@ -1,9 +1,9 @@
 {
-  "version": "1.1.0",
+  "version": "2.0.0",
   "name": "PlayApp Roulette Platform",
-  "codename": "Aurora+",
+  "codename": "Genesis",
   "releaseDate": "2025-08-01",
-  "build": 3,
+  "build": 4,
   "environment": "production",
   "features": {
     "authentication": "1.0.0",
@@ -48,6 +48,17 @@
       "type": "minor",
       "title": "📦 Implementación completa del sistema de versionado",
       "description": "Implementación completa del sistema de versionado",
+      "highlights": [
+        "Mejoras de rendimiento",
+        "Correcciones de bugs",
+        "Nuevas características"
+      ]
+    },
+    "2.0.0": {
+      "date": "2025-08-01",
+      "type": "major",
+      "title": "📦 Plataforma profesional completa con sistema de versionado integrado",
+      "description": "Plataforma profesional completa con sistema de versionado integrado",
       "highlights": [
         "Mejoras de rendimiento",
         "Correcciones de bugs",
