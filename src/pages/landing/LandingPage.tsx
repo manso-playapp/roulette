@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { AuthButton } from '../../components/AuthButton';
+import { VersionBadge } from '../../components/VersionInfo';
 
 function LandingPage() {
   const navigate = useNavigate();
@@ -363,9 +364,12 @@ function LandingPage() {
           </div>
           
           <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between">
-            <p className="text-gray-400 text-sm">
-              © 2025 PlayApp. Todos los derechos reservados.
-            </p>
+            <div className="flex items-center space-x-4">
+              <p className="text-gray-400 text-sm">
+                © 2025 PlayApp. Todos los derechos reservados.
+              </p>
+              <VersionBadge className="bg-white/10 text-white border-white/20" />
+            </div>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
                 Términos de Servicio

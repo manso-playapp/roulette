@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDashboardData, useUserGames } from '../../hooks/useFirestore';
 import { useAuth } from '../../hooks/useAuth';
+import { VersionBadge, VersionInfo, ReleaseNotes } from '../../components/VersionInfo';
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
@@ -43,9 +44,12 @@ const Dashboard: React.FC = () => {
   return (
     <div className="container-padding bg-pattern">
       <div className="flex items-center justify-between mb-8 animate-fade-in">
-        <h1 className="text-4xl font-bold text-white text-shadow-strong">
-          ✨ Dashboard Interactivo
-        </h1>
+        <div className="flex items-center space-x-4">
+          <h1 className="text-4xl font-bold text-white text-shadow-strong">
+            ✨ Dashboard Interactivo
+          </h1>
+          <VersionBadge className="bg-white/20 text-white border-white/30" />
+        </div>
         <button 
           onClick={refresh}
           className="btn-glass px-6 py-3 text-lg hover-lift"
@@ -257,6 +261,12 @@ const Dashboard: React.FC = () => {
           )}
         </div>
       )}
+
+      {/* Información de Versión y Release Notes */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+        <VersionInfo />
+        <ReleaseNotes />
+      </div>
     </div>
   );
 };

@@ -1,0 +1,58 @@
+{
+  "version": "1.1.0",
+  "name": "PlayApp Roulette Platform",
+  "codename": "Aurora+",
+  "releaseDate": "2025-08-01",
+  "build": 3,
+  "environment": "production",
+  "features": {
+    "authentication": "1.0.0",
+    "dashboard": "1.0.0",
+    "roulette": "0.1.0",
+    "analytics": "1.0.0"
+  },
+  "compatibility": {
+    "minNodeVersion": "18.0.0",
+    "browsers": [
+      "Chrome >= 90",
+      "Firefox >= 88",
+      "Safari >= 14"
+    ]
+  },
+  "changelog": {
+    "1.0.0": {
+      "date": "2025-08-01",
+      "type": "major",
+      "title": "🚀 Lanzamiento Inicial",
+      "description": "Primera versión estable con sistema de autenticación completo y dashboard profesional",
+      "highlights": [
+        "Sistema de autenticación Firebase",
+        "Dashboard con analytics en tiempo real",
+        "Diseño profesional con glassmorphism",
+        "Arquitectura escalable implementada"
+      ]
+    },
+    "1.0.1": {
+      "date": "2025-08-01",
+      "type": "patch",
+      "title": "📦 Version bump",
+      "description": "Version bump",
+      "highlights": [
+        "Mejoras de rendimiento",
+        "Correcciones de bugs",
+        "Nuevas características"
+      ]
+    },
+    "1.1.0": {
+      "date": "2025-08-01",
+      "type": "minor",
+      "title": "📦 Implementación completa del sistema de versionado",
+      "description": "Implementación completa del sistema de versionado",
+      "highlights": [
+        "Mejoras de rendimiento",
+        "Correcciones de bugs",
+        "Nuevas características"
+      ]
+    }
+  }
+}
