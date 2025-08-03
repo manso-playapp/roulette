@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import { Link } from 'react-router-dom';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -54,7 +55,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-50 p-4 pt-20">
       <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 mt-4">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-title text-gray-900">
+          <h2 className="text-2xl font-display text-gray-900">
             {isLogin ? 'Iniciar Sesión' : 'Crear Cuenta'}
           </h2>
           <button
@@ -174,6 +175,15 @@ export function AuthButton() {
             </span>
           )}
         </div>
+        
+        <Link
+          to="/admin"
+          className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-medium flex items-center space-x-2"
+        >
+          <span>🎮</span>
+          <span>Dashboard</span>
+        </Link>
+        
         <button
           onClick={logout}
           className="px-4 py-2 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"

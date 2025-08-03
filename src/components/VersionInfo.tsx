@@ -39,7 +39,7 @@ export function VersionInfo() {
   return (
     <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900">
+        <h3 className="text-lg font-semibold text-gray-900 font-display">
           Información de la Plataforma
         </h3>
         <VersionBadge variant="simple" />
@@ -103,7 +103,7 @@ export function ReleaseNotes() {
       <div className="flex items-center mb-4">
         <span className="text-2xl mr-3">🚀</span>
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">
+          <h3 className="text-lg font-semibold text-gray-900 font-display">
             {currentRelease.title}
           </h3>
           <p className="text-sm text-gray-600">

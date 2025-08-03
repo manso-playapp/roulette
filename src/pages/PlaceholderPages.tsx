@@ -10,7 +10,7 @@ const PlaceholderPage: React.FC<{ title: string; description: string; icon?: str
     <div className="min-h-[60vh] flex items-center justify-center">
       <div className="text-center max-w-md">
         <div className="text-6xl mb-6">{icon}</div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-4">{title}</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mb-4 font-display">{title}</h1>
         <p className="text-gray-600 mb-8">{description}</p>
         <div className="bg-yellow-100 border border-yellow-300 rounded-lg p-4">
           <p className="text-yellow-800 text-sm">

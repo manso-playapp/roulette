@@ -28,6 +28,7 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, displayName?: string) => Promise<void>;
   logout: () => Promise<void>;
+  loginAsDemo: () => Promise<void>;
   isDeveloper: boolean;
   isClient: boolean;
 }
@@ -163,12 +164,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await signOut(auth);
   };
 
+  // Función para login demo sin Firebase Auth (solo para desarrollo/demo)
+  const loginAsDemo = async () => {
+    try {
+      console.log('🎯 AuthProvider - Iniciando login demo...');
+      setLoading(true);
+      
+      // Crear usuario demo temporal
+      const demoUser: User = {
+        uid: 'demo-user-' + Date.now(),
+        email: 'demo@roulette.com',
+        displayName: 'Usuario Demo',
+        role: 'developer',
+        createdAt: new Date(),
+        lastLogin: new Date(),
+        isActive: true,
+      };
+      
+      console.log('🎯 AuthProvider - Usuario demo creado:', demoUser);
+      setUser(demoUser);
+      logger.info('Usuario demo iniciado exitosamente');
+    } catch (error) {
+      console.error('❌ AuthProvider - Error en login demo:', error);
+      logger.error('Error en login demo:', error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const value = {
     user,
     loading,
     signIn,
     signUp,
     logout,
+    loginAsDemo,
     isDeveloper: user?.role === 'developer',
     isClient: user?.role === 'client',
   };

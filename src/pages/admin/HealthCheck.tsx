@@ -109,8 +109,8 @@ const HealthCheckPage: React.FC = () => {
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Estado de Servicios</h1>
-            <p className="text-gray-600">Monitoreo en tiempo real de todas las conexiones</p>
+            <h1 className="text-2xl font-bold text-gray-900 font-display">Estado de Servicios</h1>
+            <p className="text-gray-600 font-body">Monitoreo en tiempo real de todas las conexiones</p>
           </div>
           
           <button

@@ -24,6 +24,12 @@ const MainLayout: React.FC = () => {
               <a href="/" className="text-gray-700 hover:text-gray-900 transition-colors">
                 Inicio
               </a>
+              <a href="/demo" className="text-gray-700 hover:text-gray-900 transition-colors">
+                🎰 Demo Ruleta
+              </a>
+              <a href="/demo/config" className="text-purple-600 hover:text-purple-800 transition-colors font-semibold">
+                ⚙️ Personalizar Ruleta
+              </a>
               <a href="/pricing" className="text-gray-700 hover:text-gray-900 transition-colors">
                 Precios
               </a>

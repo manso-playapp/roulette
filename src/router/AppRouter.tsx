@@ -10,15 +10,28 @@ import AdminLayout from '../layouts/AdminLayout';
 import LandingPage from '../pages/landing/LandingPage';
 import Dashboard from '../pages/admin/Dashboard';
 import HealthCheck from '../pages/admin/HealthCheck';
+import Analytics from '../pages/admin/Analytics';
+import GamesManagement from '../pages/admin/GamesManagement';
+import Settings from '../pages/admin/Settings';
+import Blueprints from '../pages/admin/Blueprints';
+
+// Pages de autenticación
+import LoginPage from '../pages/auth/LoginPage';
+import RegisterPage from '../pages/auth/RegisterPage';
+
+// Pages admin
+import RouletteEditor from '../pages/admin/RouletteEditor';
+
+// Debug
+import { DebugPanel } from '../components/DebugPanel';
+
+// Páginas demo
+import { RouletteDemoPage } from '../pages/demo/RouletteDemoPage';
+import { RouletteAdvancedConfigPage } from '../pages/demo/RouletteAdvancedConfigPage';
 
 // Páginas placeholder (las implementaremos una por una)
 import {
-  LoginPage,
-  RegisterPage,
-  GamesManagement,
   GameEditor,
-  Analytics,
-  Settings,
   GamePublic,
   ParticipantRegistration,
   PlayGame,
@@ -34,6 +47,10 @@ import { useAuth } from '../hooks/useAuth';
 const AppRouter: React.FC = () => {
   const { user, loading } = useAuth();
 
+  // Debug logs
+  console.log('🔍 AppRouter - user:', user);
+  console.log('🔍 AppRouter - loading:', loading);
+
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-600 to-blue-500">
@@ -47,13 +64,14 @@ const AppRouter: React.FC = () => {
   }
 
   return (
-    <Routes>
+    <>
+      <Routes>
         {/* ============================================ */}
         {/* LANDING PÚBLICO Y VENTAS */}
         {/* ============================================ */}
         
         <Route path="/" element={<MainLayout />}>
-          <Route index element={<LandingPage />} />
+          <Route index element={user ? <Navigate to="/admin" replace /> : <LandingPage />} />
           <Route path="pricing" element={<PricingPage />} />
           <Route path="checkout/:plan" element={<CheckoutPage />} />
         </Route>
@@ -63,8 +81,17 @@ const AppRouter: React.FC = () => {
         {/* ============================================ */}
         
         <Route path="/auth" element={<MainLayout />}>
-          <Route path="login" element={<LoginPage />} />
-          <Route path="register" element={<RegisterPage />} />
+          <Route path="login" element={user ? <Navigate to="/admin" replace /> : <LoginPage />} />
+          <Route path="register" element={user ? <Navigate to="/admin" replace /> : <RegisterPage />} />
+        </Route>
+
+        {/* ============================================ */}
+        {/* PÁGINAS DEMO */}
+        {/* ============================================ */}
+        
+        <Route path="/demo" element={<MainLayout />}>
+          <Route index element={<RouletteDemoPage />} />
+          <Route path="config" element={<RouletteAdvancedConfigPage />} />
         </Route>
 
         {/* ============================================ */}
@@ -74,14 +101,21 @@ const AppRouter: React.FC = () => {
         <Route 
           path="/admin" 
           element={
-            user ? <AdminLayout /> : <Navigate to="/auth/login" replace />
+            (() => {
+              console.log('🔒 Ruta admin - user:', user);
+              console.log('🔒 Ruta admin - ¿autenticado?:', !!user);
+              return user ? <AdminLayout /> : <Navigate to="/auth/login" replace />;
+            })()
           }
         >
           <Route index element={<Dashboard />} />
           <Route path="games" element={<GamesManagement />} />
+          <Route path="games/roulette/new" element={<RouletteEditor />} />
+          <Route path="games/roulette/:id" element={<RouletteEditor />} />
           <Route path="games/new" element={<GameEditor />} />
           <Route path="games/:gameId/edit" element={<GameEditor />} />
           <Route path="analytics" element={<Analytics />} />
+          <Route path="blueprints" element={<Blueprints />} />
           <Route path="settings" element={<Settings />} />
           <Route path="health" element={<HealthCheck />} />
         </Route>
@@ -126,6 +160,10 @@ const AppRouter: React.FC = () => {
           </div>
         } />
       </Routes>
+      
+      {/* Panel de debug para desarrollo */}
+      <DebugPanel />
+    </>
   );
 };
 

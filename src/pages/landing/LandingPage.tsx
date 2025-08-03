@@ -94,10 +94,16 @@ function LandingPage() {
               <a href="#use-cases" className="text-gray-600 hover:text-purple-600 font-medium transition-colors">
                 Casos de Uso
               </a>
-              <a href="#pricing" className="text-gray-600 hover:text-purple-600 font-medium transition-colors">
-                Precios
-              </a>
-              <AuthButton />
+              <Link to="/demo" className="text-gray-600 hover:text-purple-600 font-medium transition-colors">
+                Demo
+              </Link>
+              <Link 
+                to="/auth/login" 
+                onClick={() => console.log('🔗 Botón Acceder clickeado - navegando a /auth/login')}
+                className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-200"
+              >
+                Acceder
+              </Link>
             </nav>
 
             <button className="md:hidden p-2">
@@ -130,9 +136,12 @@ function LandingPage() {
                 >
                   🚀 Crear mi Primer Juego
                 </button>
-                <button className="border border-gray-300 text-gray-700 px-8 py-4 rounded-xl hover:bg-gray-50 transition-all duration-200 font-semibold">
-                  📹 Ver Demo
-                </button>
+                <Link 
+                  to="/demo"
+                  className="border border-gray-300 text-gray-700 px-8 py-4 rounded-xl hover:bg-gray-50 transition-all duration-200 font-semibold text-center"
+                >
+                  📹 Ver Demo Interactivo
+                </Link>
               </div>
               
               <div className="mt-12 flex items-center justify-center lg:justify-start space-x-8">
@@ -290,8 +299,14 @@ function LandingPage() {
             >
               🚀 Comenzar Gratis Ahora
             </button>
-            <button className="border border-white text-white px-8 py-4 rounded-xl hover:bg-white hover:text-purple-600 transition-all duration-300 font-semibold">
-              📞 Hablar con Ventas
+            <Link 
+              to="/demo/config"
+              className="border border-white text-white px-8 py-4 rounded-xl hover:bg-white hover:text-purple-600 transition-all duration-300 font-semibold text-center"
+            >
+              ⚙️ Probar Configurador
+            </Link>
+            <button className="border border-white text-white px-6 py-4 rounded-xl hover:bg-white hover:text-purple-600 transition-all duration-300 font-semibold">
+              📞 Ventas
             </button>
           </div>
           

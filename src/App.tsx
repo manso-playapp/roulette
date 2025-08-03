@@ -10,6 +10,11 @@ import AdminLayout from './layouts/AdminLayout';
 import LandingPage from './pages/landing/LandingPage';
 import Dashboard from './pages/admin/Dashboard';
 import HealthCheck from './pages/admin/HealthCheck';
+import { RouletteDemoPage } from './pages/demo/RouletteDemoPage';
+import { RouletteAdvancedConfigPage } from './pages/demo/RouletteAdvancedConfigPage';
+
+// Debug
+import { DebugPanel } from './components/DebugPanel';
 
 import './App.css';
 
@@ -35,7 +40,9 @@ function AppRoutes() {
         <Route index element={<LandingPage />} />
       </Route>
 
-      {/* Rutas de administración */}
+      {/* Demo de la ruleta */}
+          <Route path="/demo" element={<RouletteDemoPage />} />
+          <Route path="/demo/advanced" element={<RouletteAdvancedConfigPage />} />      {/* Rutas de administración */}
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Dashboard />} />
         <Route path="health" element={<HealthCheck />} />

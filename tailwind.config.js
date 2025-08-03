@@ -7,8 +7,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        title: ['Special Gothic Expanded One', 'Inter', 'sans-serif'],
+        'sans': ['DM Sans', 'Inter', 'system-ui', 'sans-serif'],
+        'display': ['DM Sans', 'Inter', 'system-ui', 'sans-serif'],
+        'body': ['DM Sans', 'Inter', 'system-ui', 'sans-serif'],
       },
       colors: {
         primary: {
