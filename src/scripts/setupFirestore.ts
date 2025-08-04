@@ -9,7 +9,7 @@ import { BaseGame, User, RouletteConfig, RouletteSegment, Prize } from "../types
 // Usuario de prueba
 const demoUser: User = {
   id: 'demo-user-123',
-  email: 'demo@gamesplatform.com',
+  email: 'demo@playapp.com',
   name: 'Usuario Demo',
   plan: 'pro',
   subscription: {
@@ -234,7 +234,7 @@ const demoGame: BaseGame = {
     businessEmail: 'mario@pizzeriamario.com',
     instagramUrl: 'https://instagram.com/pizzeriamario',
     accessType: 'platform',
-    testEmails: ['test@pizzeriamario.com', 'demo@gamesplatform.com'],
+    testEmails: ['test@pizzeriamario.com', 'demo@playapp.com'],
     emailNotifications: true,
     smsNotifications: false,
     colors: {

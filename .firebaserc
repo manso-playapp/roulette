@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "roulette-f9d63"
-  }
+    "default": "roulette-f9d63",
+    "firebase deploy --only storage --debug": "lucky-spin-gmio3"
+  },
+  "targets": {},
+  "etags": {}
 }

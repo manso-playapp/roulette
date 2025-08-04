@@ -50,72 +50,49 @@ export interface BaseGame {
 }
 
 // ============================================
-// Authentication Types
-export interface User {
-  uid: string;
-  email: string;
-  displayName?: string;
-  role: UserRole;
-  createdAt: Date;
-  lastLogin: Date;
-  isActive: boolean;
-  profile: UserProfile;
-}
+// CONFIGURACIÓN DE PLATAFORMA
+// ============================================
 
-export type UserRole = 'developer' | 'client';
-
-export interface UserProfile {
-  firstName?: string;
-  lastName?: string;
-  company?: string;
-  phone?: string;
-  avatar?: string;
-  preferences: UserPreferences;
-}
-
-export interface UserPreferences {
-  theme: 'light' | 'dark' | 'auto';
-  language: 'es' | 'en';
-  notifications: boolean;
-}
-
-// Roulette Customization Types
-export interface RouletteConfig {
+export interface PlatformConfig {
   id: string;
-  clientId: string;
-  name: string;
-  segments: RouletteSegment[];
-  appearance: RouletteAppearance;
-  settings: RouletteSettings;
-  createdAt: Date;
-  updatedAt: Date;
-  isActive: boolean;
+  
+  // Branding general
+  branding: {
+    logoUrl?: string;
+    primaryColor: string;
+    secondaryColor: string;
+    accentColor: string;
+  };
+  
+  // Hero Section - Carrusel de imágenes
+  heroCarousel: {
+    enabled: boolean;
+    autoRotate: boolean;
+    rotationInterval: number; // en segundos
+    images: HeroCarouselImage[];
+  };
+  
+  // SEO y metadatos
+  seo: {
+    title: string;
+    description: string;
+    keywords: string[];
+    ogImage?: string;
+  };
 }
 
-export interface RouletteSegment {
+export interface HeroCarouselImage {
   id: string;
-  label: string;
-  color: string;
-  probability: number;
-  value?: string | number;
-}
-
-export interface RouletteAppearance {
-  backgroundColor: string;
-  wheelColors: string[];
-  textColor: string;
-  borderColor: string;
-  logo?: string;
-  backgroundImage?: string;
-  wheelStyle: 'classic' | 'modern' | 'neon';
-}
-
-export interface RouletteSettings {
-  spinDuration: number;
-  autoSpin: boolean;
-  soundEnabled: boolean;
-  animationStyle: 'smooth' | 'bouncy' | 'linear';
-  wheelSize: 'small' | 'medium' | 'large';
+  title: string;
+  icon: string; // emoji o URL de icono
+  imageUrl: string; // URL de imagen o video
+  mediaType: 'image' | 'video'; // Tipo de media
+  overlay: string; // clase CSS para overlay de color
+  description?: string;
+  buttonText?: string;
+  buttonLink?: string;
+  isActive: boolean;
+  order: number;
 }
 
 // Health Check Types

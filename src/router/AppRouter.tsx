@@ -21,6 +21,7 @@ import RegisterPage from '../pages/auth/RegisterPage';
 
 // Pages admin
 import RouletteEditor from '../pages/admin/RouletteEditor';
+import { PlatformConfigPage } from '../pages/admin/PlatformConfig';
 
 // Debug
 import { DebugPanel } from '../components/DebugPanel';
@@ -71,7 +72,7 @@ const AppRouter: React.FC = () => {
         {/* ============================================ */}
         
         <Route path="/" element={<MainLayout />}>
-          <Route index element={user ? <Navigate to="/admin" replace /> : <LandingPage />} />
+          <Route index element={<LandingPage />} />
           <Route path="pricing" element={<PricingPage />} />
           <Route path="checkout/:plan" element={<CheckoutPage />} />
         </Route>
@@ -81,8 +82,8 @@ const AppRouter: React.FC = () => {
         {/* ============================================ */}
         
         <Route path="/auth" element={<MainLayout />}>
-          <Route path="login" element={user ? <Navigate to="/admin" replace /> : <LoginPage />} />
-          <Route path="register" element={user ? <Navigate to="/admin" replace /> : <RegisterPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="register" element={<RegisterPage />} />
         </Route>
 
         {/* ============================================ */}
@@ -117,6 +118,7 @@ const AppRouter: React.FC = () => {
           <Route path="analytics" element={<Analytics />} />
           <Route path="blueprints" element={<Blueprints />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="platform-config" element={<PlatformConfigPage />} />
           <Route path="health" element={<HealthCheck />} />
         </Route>
 

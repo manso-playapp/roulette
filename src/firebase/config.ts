@@ -7,7 +7,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyDoXSOeFcO9UWcZgxr2TwaMeW9GYkYZi6I",
   authDomain: "roulette-f9d63.firebaseapp.com",
   projectId: "roulette-f9d63",
-  storageBucket: "roulette-f9d63.appspot.com",
+  storageBucket: "roulette-f9d63.firebasestorage.app",
   messagingSenderId: "932120111799",
   appId: "1:932120111799:web:7059d0ced90a4989593b32",
 };

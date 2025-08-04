@@ -12,7 +12,7 @@ const GameLayout: React.FC = () => {
       
       {/* Branding sutil en la esquina */}
       <div className="absolute bottom-4 right-4 text-white/30 text-xs">
-        <span>Powered by GamesPlatform</span>
+        <span>Powered by PlayApp</span>
       </div>
     </div>
   );

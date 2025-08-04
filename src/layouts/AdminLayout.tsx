@@ -13,7 +13,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Menu,
-  X
+  X,
+  Palette
 } from 'lucide-react';
 
 // Layout para el dashboard de administración
@@ -32,6 +33,15 @@ const AdminLayout: React.FC = () => {
     external?: boolean;
     separator?: boolean;
   }> = [
+    {
+      name: 'Ver Home',
+      path: '/',
+      icon: LayoutDashboard,
+      description: 'Ir a la página principal',
+      external: true
+    },
+    // Separador visual
+    { separator: true },
     {
       name: 'Dashboard',
       path: '/admin',
@@ -76,6 +86,15 @@ const AdminLayout: React.FC = () => {
       path: '/admin/settings',
       icon: Settings,
       description: 'Ajustes de cuenta'
+    },
+    {
+      separator: true
+    },
+    {
+      name: 'Conf. Home',
+      path: '/admin/platform-config',
+      icon: Palette,
+      description: 'Carrusel e imágenes del hero'
     }
   ];
 
@@ -144,7 +163,13 @@ const AdminLayout: React.FC = () => {
                 key={item.path}
                 onClick={() => {
                   if (item.external) {
-                    window.open(item.path!, '_blank');
+                    // Para "Ver Home", navegar en la misma ventana
+                    if (item.path === '/') {
+                      navigate(item.path);
+                    } else {
+                      // Para otros externos como "Usuario Demo", abrir en nueva pestaña
+                      window.open(item.path!, '_blank');
+                    }
                   } else {
                     navigate(item.path!);
                     setSidebarOpen(false);
