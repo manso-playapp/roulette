@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;600;700&family=Bebas+Neue&family=Oswald:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
+  }
+  
+  body {
+    font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6, .title {
+    font-family: 'DM Sans', 'Inter', sans-serif;
+    font-weight: 600;
+  }
+  
+  .font-display {
+    font-family: 'DM Sans', 'Inter', sans-serif;
+    font-weight: 700;
+  }
+  
+  .font-body {
+    font-family: 'DM Sans', 'Inter', sans-serif;
+    font-weight: 400;
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #fff;
+  color: #222;
+}
+
+/* Estilos personalizados para sliders mejorados */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  height: 1.5rem;
+  border-radius: 0.75rem;
+}
+
+input[type="range"]::-webkit-slider-track {
+  height: 0.5rem;
+  background: linear-gradient(to right, rgba(139, 92, 246, 0.3), rgba(59, 130, 246, 0.3));
+  border-radius: 0.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(139, 92, 246, 0.4), 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  background: linear-gradient(135deg, #7c3aed, #2563eb);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.6), 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+input[type="range"]::-moz-range-track {
+  height: 0.5rem;
+  background: linear-gradient(to right, rgba(139, 92, 246, 0.3), rgba(59, 130, 246, 0.3));
+  border-radius: 0.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+input[type="range"]::-moz-range-thumb {
+  height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(139, 92, 246, 0.4), 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+  background: linear-gradient(135deg, #7c3aed, #2563eb);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.6), 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilos específicos para sliders mejorados */
+.slider-enhanced {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  padding: 0.25rem;
+}
+
+.slider-enhanced::-webkit-slider-track {
+  background: linear-gradient(90deg, 
+    rgba(139, 92, 246, 0.4) 0%, 
+    rgba(59, 130, 246, 0.4) 50%, 
+    rgba(16, 185, 129, 0.4) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    inset 0 1px 3px rgba(0, 0, 0, 0.3),
+    0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.slider-enhanced::-webkit-slider-thumb {
+  background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 50%, #10b981 100%);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 
+    0 2px 8px rgba(139, 92, 246, 0.5),
+    0 1px 3px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.slider-enhanced::-webkit-slider-thumb:hover {
+  background: linear-gradient(135deg, #7c3aed 0%, #2563eb 50%, #059669 100%);
+  transform: scale(1.15);
+  box-shadow: 
+    0 4px 16px rgba(139, 92, 246, 0.7),
+    0 2px 8px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.slider-enhanced::-moz-range-track {
+  background: linear-gradient(90deg, 
+    rgba(139, 92, 246, 0.4) 0%, 
+    rgba(59, 130, 246, 0.4) 50%, 
+    rgba(16, 185, 129, 0.4) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.slider-enhanced::-moz-range-thumb {
+  background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 50%, #10b981 100%);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 
+    0 2px 8px rgba(139, 92, 246, 0.5),
+    0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Animaciones para drag & drop */
+.drag-preview {
+  opacity: 0.5;
+  transform: rotate(3deg);
+  transition: all 0.2s ease;
+}
+
+.drag-over {
+  border-color: #8b5cf6 !important;
+  background-color: rgba(139, 92, 246, 0.1) !important;
+  transform: scale(1.02);
+}
+
+/* Efectos de hover mejorados */
+.sector-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Animaciones de pestañas */
+.tab-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Estilos para toggles personalizados */
+.toggle-switch {
+  transition: all 0.3s ease;
+}
+
+.toggle-switch:hover {
+  transform: scale(1.05);
+}
