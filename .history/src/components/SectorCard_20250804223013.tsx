@@ -110,13 +110,11 @@ export const SectorCard: React.FC<SectorCardProps> = ({
         <div className="flex items-center space-x-3">
           <div
             className="w-8 h-8 rounded-lg border-2 border-gray-200"
-            style={{ backgroundColor: sector.backgroundColor || sector.color }}
-            title={`Color: ${sector.backgroundColor || sector.color}`}
+            style={{ backgroundColor: sector.color }}
+            title={`Color: ${sector.color}`}
           />
           <div className="flex-1">
-            <h3 className="font-semibold text-gray-900 truncate">
-              {sector.displayName || sector.formalName || sector.label}
-            </h3>
+            <h3 className="font-semibold text-gray-900 truncate">{sector.label}</h3>
             <p className="text-sm text-gray-500">
               {sector.isPrize ? '🎁 Premio' : '📝 Información'}
             </p>
@@ -139,16 +137,11 @@ export const SectorCard: React.FC<SectorCardProps> = ({
           </div>
         </div>
 
-        {/* Líneas de texto si existen */}
-        {sector.textLines && sector.textLines.length > 0 && (
-          <div className="space-y-1">
-            <span className="text-sm text-gray-600">Texto en el gajo:</span>
-            {sector.textLines.map((line, index) => (
-              <p key={index} className="text-sm text-gray-600 bg-gray-50 px-2 py-1 rounded">
-                {line}
-              </p>
-            ))}
-          </div>
+        {/* Descripción si existe */}
+        {sector.description && (
+          <p className="text-sm text-gray-600 bg-gray-50 p-2 rounded-lg">
+            {sector.description}
+          </p>
         )}
 
         {/* Badge de premio */}
