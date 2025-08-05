@@ -13,70 +13,85 @@ export const useRoulette = (sectors: RouletteSector[]) => {
   const animationRef = useRef<number | undefined>(undefined);
   const [lastResult, setLastResult] = useState<RouletteSpinResult | null>(null);
 
-  // Calcular el ganador basado en el ángulo final
+  // Calcular ganador - ahora el sector en posición Norte (0°) es siempre el ganador
   const calculateWinner = useCallback((finalAngle: number): RouletteSector | null => {
     if (sectors.length === 0) return null;
 
     const activeSectors = sectors.filter(s => s.isActive).sort((a, b) => a.order - b.order);
     if (activeSectors.length === 0) return null;
 
-    const degreesPerSector = 360 / activeSectors.length;
-    
-    // Normalizar el ángulo (0-360)
+    // Con la nueva lógica, el ganador siempre queda en posición Norte
+    // Así que calculamos qué sector está en esa posición basado en el ángulo final
     const normalizedAngle = ((360 - (finalAngle % 360)) + 360) % 360;
-    
-    // Calcular qué sector corresponde (empezando desde el norte)
-    const sectorIndex = Math.floor(normalizedAngle / degreesPerSector);
+    const degreesPerSector = 360 / activeSectors.length;
+    const sectorIndex = Math.floor(normalizedAngle / degreesPerSector) % activeSectors.length;
     
     return activeSectors[sectorIndex] || activeSectors[0];
   }, [sectors]);
 
-  // Generar ángulo final considerando probabilidades
-  const generateWeightedAngle = useCallback((): number => {
+  // Nueva lógica: Seleccionar ganador primero, luego calcular ángulo para posición Norte
+  const generateTargetAngleForWinner = useCallback((): { angle: number; winner: RouletteSector | null } => {
     const activeSectors = sectors.filter(s => s.isActive);
-    if (activeSectors.length === 0) return Math.random() * 360;
+    if (activeSectors.length === 0) return { angle: Math.random() * 360, winner: null };
 
-    // Normalizar probabilidades
+    // 1. Seleccionar sector ganador basado en probabilidades
     const totalProbability = activeSectors.reduce((sum, sector) => sum + sector.probability, 0);
     const normalizedSectors = activeSectors.map(sector => ({
       ...sector,
       normalizedProbability: sector.probability / totalProbability
     }));
 
-    // Seleccionar sector basado en probabilidades
     const random = Math.random();
     let cumulative = 0;
+    let selectedSector: RouletteSector | null = null;
+    let sectorIndex = 0;
     
     for (let i = 0; i < normalizedSectors.length; i++) {
       cumulative += normalizedSectors[i].normalizedProbability;
       if (random <= cumulative) {
-        const sectorIndex = i;
-        const degreesPerSector = 360 / activeSectors.length;
-        
-        // Calcular ángulo dentro del sector (para que no siempre caiga en el centro)
-        const sectorStartAngle = sectorIndex * degreesPerSector;
-        const randomWithinSector = Math.random() * degreesPerSector;
-        
-        // Agregar vueltas completas para hacer el giro más espectacular
-        const extraSpins = 3 + Math.random() * 3; // 3-6 vueltas extra
-        
-        return (360 * extraSpins) + sectorStartAngle + randomWithinSector;
+        selectedSector = normalizedSectors[i];
+        sectorIndex = i;
+        break;
       }
     }
 
     // Fallback
-    return Math.random() * 360 + (360 * 4);
+    if (!selectedSector) {
+      selectedSector = activeSectors[0];
+      sectorIndex = 0;
+    }
+
+    // 2. Calcular ángulo para que el sector ganador quede en posición Norte (arriba)
+    const degreesPerSector = 360 / activeSectors.length;
+    const sectorStartAngle = sectorIndex * degreesPerSector;
+    const sectorCenterAngle = sectorStartAngle + (degreesPerSector / 2);
+    
+    // 3. Posición aleatoria DENTRO del sector ganador (no siempre en el centro)
+    const randomWithinSector = (Math.random() - 0.5) * degreesPerSector * 0.8; // 80% del sector para evitar bordes
+    
+    // 4. Agregar 6+ vueltas rápidas para espectacularidad
+    const extraSpins = 6 + Math.random() * 2; // 6-8 vueltas
+    
+    // 5. Calcular ángulo final: vueltas + ángulo para llevar sector a Norte + variación
+    // Norte está a 0°, así que necesitamos rotar para que el sector quede ahí
+    const angleToNorth = 360 - sectorCenterAngle + randomWithinSector;
+    const finalAngle = (360 * extraSpins) + angleToNorth;
+    
+    return { 
+      angle: finalAngle, 
+      winner: selectedSector 
+    };
   }, [sectors]);
 
-  // Función de animación
-  const animateRoulette = useCallback((startTime: number, duration: number, targetAngle: number) => {
+  // Función de animación mejorada con easing más realista
+  const animateRoulette = useCallback((startTime: number, duration: number, targetAngle: number, preselectedWinner: RouletteSector | null) => {
     const animate = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
       
-      // Función de easing (ease-out cúbico para efecto realista)
-      const easeOut = 1 - Math.pow(1 - progress, 3);
-      const currentAngle = targetAngle * easeOut;
+      // Función de easing más realista para ruleta (rápido al inicio, desaceleración gradual)
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      const currentAngle = targetAngle * easeOutQuart;
 
       setAnimation(prev => ({
         ...prev,
@@ -87,12 +102,11 @@ export const useRoulette = (sectors: RouletteSector[]) => {
       if (progress < 1) {
         animationRef.current = requestAnimationFrame(animate);
       } else {
-        // Animación terminada
-        const winner = calculateWinner(targetAngle);
+        // Animación terminada - usar el ganador preseleccionado
         const result: RouletteSpinResult = {
-          winnerSectorId: winner?.id || '',
-          winnerSector: winner || sectors[0], // Fallback al primer sector
-          isWinner: winner?.isPrize || false,
+          winnerSectorId: preselectedWinner?.id || '',
+          winnerSector: preselectedWinner || sectors[0],
+          isWinner: preselectedWinner?.isPrize || false,
           finalAngle: targetAngle,
           spinDuration: duration,
           timestamp: new Date(),
@@ -113,9 +127,9 @@ export const useRoulette = (sectors: RouletteSector[]) => {
     };
 
     animationRef.current = requestAnimationFrame(animate);
-  }, [calculateWinner]);
+  }, [sectors]);
 
-  // Función principal para girar la ruleta
+  // Función principal para girar la ruleta con nueva lógica
   const spin = useCallback(() => {
     if (animation.isSpinning || sectors.filter(s => s.isActive).length === 0) {
       return;
@@ -126,9 +140,19 @@ export const useRoulette = (sectors: RouletteSector[]) => {
       cancelAnimationFrame(animationRef.current);
     }
 
-    const targetAngle = generateWeightedAngle();
-    const duration = 3000 + Math.random() * 2000; // 3-5 segundos
+    // 1. Preseleccionar ganador y calcular ángulo objetivo
+    const { angle: targetAngle, winner: preselectedWinner } = generateTargetAngleForWinner();
+    
+    // 2. Duración variable para mayor realismo (4-6 segundos)
+    const duration = 4000 + Math.random() * 2000;
     const startTime = performance.now();
+
+    console.log('🎰 Sorteo realizado:', {
+      winner: preselectedWinner?.label,
+      targetAngle: Math.round(targetAngle),
+      vueltas: Math.floor(targetAngle / 360),
+      anguloFinal: Math.round(targetAngle % 360)
+    });
 
     setAnimation({
       isSpinning: true,
@@ -138,8 +162,8 @@ export const useRoulette = (sectors: RouletteSector[]) => {
       startTime
     });
 
-    animateRoulette(startTime, duration, targetAngle);
-  }, [animation.isSpinning, sectors, generateWeightedAngle, animateRoulette]);
+    animateRoulette(startTime, duration, targetAngle, preselectedWinner);
+  }, [animation.isSpinning, sectors, generateTargetAngleForWinner, animateRoulette]);
 
   // Función para resetear la ruleta
   const reset = useCallback(() => {
