@@ -14,7 +14,8 @@ import {
   ChevronRight,
   Menu,
   X,
-  Palette
+  Palette,
+  Wrench
 } from 'lucide-react';
 
 // Layout para el dashboard de administración
@@ -52,13 +53,21 @@ const AdminLayout: React.FC = () => {
       name: 'Mis Juegos',
       path: '/admin/games',
       icon: Gamepad2,
-      description: 'Gestionar juegos'
+      description: 'Gestionar instancias'
     },
     {
       name: 'Analytics',
       path: '/admin/analytics',
       icon: TrendingUp,
       description: 'Estadísticas detalladas'
+    },
+    // Separador visual
+    { separator: true },
+    {
+      name: 'STUDIO',
+      path: '/studio',
+      icon: Wrench,
+      description: 'Desarrollar y probar juegos'
     },
     // Separador visual
     { separator: true },

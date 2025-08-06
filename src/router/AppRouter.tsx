@@ -33,8 +33,14 @@ import { RouletteAdvancedConfigPage } from '../pages/demo/RouletteAdvancedConfig
 // Páginas de test
 import TestRouletteNewPage from '../pages/test/TestRouletteNewPage';
 
-// Páginas de configuración
+// Pages de configuración
 import RouletteConfigPage from '../pages/config/RouletteConfigPage';
+
+// Game Studio (Nueva arquitectura)
+import GameStudioDashboard from '../studio/pages/GameStudioDashboard';
+
+// Migration Landing
+import MigrationLanding from '../pages/MigrationLanding';
 
 // Páginas placeholder (las implementaremos una por una)
 import {
@@ -93,7 +99,33 @@ const AppRouter: React.FC = () => {
         </Route>
 
         {/* ============================================ */}
-        {/* PÁGINAS DEMO */}
+        {/* GAME STUDIO - NUEVA ARQUITECTURA */}
+        {/* ============================================ */}
+        
+        <Route 
+          path="/studio" 
+          element={
+            (() => {
+              console.log('🎮 Ruta studio - user:', user);
+              console.log('🎮 Ruta studio - ¿autenticado?:', !!user);
+              return user ? <AdminLayout /> : <Navigate to="/auth/login" replace />;
+            })()
+          }
+        >
+          <Route index element={<GameStudioDashboard />} />
+          <Route path="migration" element={<MigrationLanding />} />
+          {/* Futuras rutas del studio:
+          <Route path="projects/new" element={<ProjectEditor />} />
+          <Route path="projects/:id" element={<ProjectEditor />} />
+          <Route path="templates" element={<TemplatesManager />} />
+          <Route path="templates/:id" element={<TemplateEditor />} />
+          <Route path="instances" element={<InstancesManager />} />
+          <Route path="deploy" element={<DeployCenter />} />
+          */}
+        </Route>
+
+        {/* ============================================ */}
+        {/* PÁGINAS DEMO (LEGACY - Para referencia) */}
         {/* ============================================ */}
         
         <Route path="/demo" element={<MainLayout />}>
@@ -104,7 +136,7 @@ const AppRouter: React.FC = () => {
         </Route>
 
         {/* ============================================ */}
-        {/* ADMIN DASHBOARD (PROTEGIDO) */}
+        {/* ADMIN DASHBOARD (LEGACY - Migrar a Studio) */}
         {/* ============================================ */}
         
         <Route 
